@@ -30,9 +30,9 @@ hist(activitySum$steps, main="Histogram of Total Steps Per Day", xlab="Total Ste
 2. Calculate and report the mean and median total number of steps taken per day
 
 ```{r}
-setNames(aggregate(activity$steps, by=list(as.character(activity$date)), FUN = mean, na.rm = TRUE), c("date","meanSteps"))
-
-setNames(aggregate(activity$steps, by=list(as.character(activity$date)), FUN = median, na.rm = TRUE), c("date","medianSteps"))
+#setNames(aggregate(activity$steps, by=list(as.character(activity$date)), FUN = mean, na.rm = TRUE), c("date","meanSteps"))
+#setNames(aggregate(activity$steps, by=list(as.character(activity$date)), FUN = median, na.rm = TRUE), c("date","medianSteps"))
+summary(activitySum$steps)
 ```
 
 ## What is the average daily activity pattern?
@@ -94,9 +94,9 @@ hist(activityFillSum$steps, main="Histogram of Total Steps Per Day (Filled)", xl
 
 mean and median total number of steps taken per day (filled)
 ```{r}
-setNames(aggregate(activityFill$steps, by=list(as.character(activityFill$date)), FUN = mean ), c("date","meanSteps"))
-
-setNames(aggregate(activityFill$steps, by=list(as.character(activityFill$date)), FUN = median), c("date","medianSteps"))
+#setNames(aggregate(activityFill$steps, by=list(as.character(activityFill$date)), FUN = mean ), c("date","meanSteps"))
+#setNames(aggregate(activityFill$steps, by=list(as.character(activityFill$date)), FUN = median), c("date","medianSteps"))
+summary(activityFillSum$steps)
 ```
 
 ## Are there differences in activity patterns between weekdays and weekends?
