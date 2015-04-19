@@ -10,13 +10,13 @@ Saturday, April 18, 2015
 unzip("activity.zip")
 activity <- read.csv("activity.csv", sep = ",", header = TRUE)
 
-# convert date to POSIXct and add POSIXct data type for date and interval
+# convert date to POSIXct
 activity$date<-strptime(activity$date, "%Y-%m-%d")
-activity <- transform(activity, datetime = as.POSIXct(paste(date, sprintf("%04d", interval)), format = "%Y-%m-%d %H%M"))
 ```
+
 ## What is mean total number of steps taken per day?
 
-1. Calculate the total number of steps taken per day
+(1) Calculate the total number of steps taken per day
 
 
 ```r
@@ -89,7 +89,7 @@ activitySum
 ## 61 2012-11-30     0
 ```
 
-2. Make a histogram of the total number of steps taken each day
+(2) Make a histogram of the total number of steps taken each day
 
 
 ```r
@@ -98,7 +98,7 @@ hist(activitySum$steps, main="Histogram of Total Steps Per Day", xlab="Total Ste
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-3. Calculate and report the mean and median total number of steps taken per day
+(3) Calculate and report the mean and median total number of steps taken per day
 
 
 ```r
@@ -114,7 +114,7 @@ summary(activitySum$steps)
 
 ## What is the average daily activity pattern?
 
-1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+(1) Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
 
 ```r
@@ -124,7 +124,7 @@ plot(activityMeanInterval$interval, activityMeanInterval$steps, type="l", xlab= 
 
 ![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
 
-2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+(2) Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
 ```r
@@ -144,9 +144,9 @@ head(groupbyInterval[order(-groupbyInterval$steps, groupbyInterval$interval),])
 ## 101      820  9071
 ```
 
-## Inputing missing values
+## Imputing missing values
 
-1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+(1) Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
 
 ```r
@@ -157,9 +157,11 @@ length(which(is.na(activity)))
 ## [1] 2304
 ```
 
-2. Devise a strategy for filling in all of the missing values in the dataset. (The strategy is using the mean for that 5-minute interval to fill the missing values)
+(2) Devise a strategy for filling in all of the missing values in the dataset. 
 
-3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+The strategy is using the mean for the 5-minute interval to fill the missing values
+
+(3) Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
 
 ```r
@@ -191,7 +193,7 @@ summary(activityFill$steps)
 ##    0.00    0.00    0.00   37.38   27.00  806.00
 ```
 
-4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputing missing data on the estimates of the total daily number of steps?
+(4) Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
 
@@ -217,9 +219,11 @@ summary(activityFillSum$steps)
 ##      41    9819   10770   10770   12810   21190
 ```
 
+With Imputing, mean and median are higher than before, and the values are very close.
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
-1. Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+(1) Create a new factor variable in the dataset with two levels -- "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
 
 ```r
@@ -234,7 +238,7 @@ table(activityFill$weekday)
 ##   12960    4608
 ```
 
-2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
+(2) Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
 
 ```r

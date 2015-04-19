@@ -64,9 +64,8 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 unzip(&quot;activity.zip&quot;)
 activity &lt;- read.csv(&quot;activity.csv&quot;, sep = &quot;,&quot;, header = TRUE)
 
-# convert date to POSIXct and add POSIXct data type for date and interval
-activity$date&lt;-strptime(activity$date, &quot;%Y-%m-%d&quot;)
-activity &lt;- transform(activity, datetime = as.POSIXct(paste(date, sprintf(&quot;%04d&quot;, interval)), format = &quot;%Y-%m-%d %H%M&quot;))</code></pre>
+# convert date to POSIXct
+activity$date&lt;-strptime(activity$date, &quot;%Y-%m-%d&quot;)</code></pre>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>
@@ -174,16 +173,19 @@ head(groupbyInterval[order(-groupbyInterval$steps, groupbyInterval$interval),])<
 ## 103      830  9397
 ## 101      820  9071</code></pre>
 </div>
-<div id="inputing-missing-values" class="section level2">
-<h2>Inputing missing values</h2>
+<div id="imputing-missing-values" class="section level2">
+<h2>Imputing missing values</h2>
 <ol style="list-style-type: decimal">
 <li>Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)</li>
 </ol>
 <pre class="r"><code>length(which(is.na(activity)))</code></pre>
 <pre><code>## [1] 2304</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li><p>Devise a strategy for filling in all of the missing values in the dataset. (The strategy is using the mean for that 5-minute interval to fill the missing values)</p></li>
-<li><p>Create a new dataset that is equal to the original dataset but with the missing data filled in.</p></li>
+<li>Devise a strategy for filling in all of the missing values in the dataset.</li>
+</ol>
+<p>The strategy is using the mean for the 5-minute interval to fill the missing values</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Create a new dataset that is equal to the original dataset but with the missing data filled in.</li>
 </ol>
 <pre class="r"><code># find average steps group by interval where steps is not NA
 groupbyIntervalMean &lt;- setNames(aggregate(activity$steps, by=list(activity$interval), FUN = mean, na.rm = TRUE), c(&quot;interval&quot;,&quot;meanSteps&quot;))
@@ -200,7 +202,7 @@ activityFill &lt;- within(activityFill, {steps &lt;- ifelse(!is.na(steps), steps
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##    0.00    0.00    0.00   37.38   27.00  806.00</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of inputing missing data on the estimates of the total daily number of steps?</li>
+<li>Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?</li>
 </ol>
 <p>Make a histogram of the total number of steps taken each day (Filled)</p>
 <pre class="r"><code>activityFillSum &lt;- setNames(aggregate(activityFill$steps, by=list(as.character(activityFill$date)), FUN = sum), c(&quot;date&quot;,&quot;steps&quot;))
@@ -212,6 +214,7 @@ hist(activityFillSum$steps, main=&quot;Histogram of Total Steps Per Day (Filled)
 summary(activityFillSum$steps)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##      41    9819   10770   10770   12810   21190</code></pre>
+<p>With Imputing, mean and median are higher than before, and the values are very close.</p>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
